@@ -95,6 +95,7 @@
     let gameInterval;
     let totalShown = 0;
     let bestScore = localStorage.getItem('chaseBestScore') || 0;
+    let gameOver = false;
 
     function updateScore() {
       score++;
@@ -102,6 +103,7 @@
     }
 
     function spawnAnimal() {
+      if (gameOver) return;
       const data = animalData[Math.floor(Math.random() * animalData.length)];
       const img = document.createElement('img');
       img.src = `${data.short}.png`;
@@ -112,6 +114,7 @@
       totalShown++;
 
       img.addEventListener('click', () => {
+        if (gameOver) return;
         const rect = img.getBoundingClientRect();
         kid.style.left = rect.left + 'px';
         kid.style.top = rect.top + 'px';
@@ -129,7 +132,7 @@
       });
 
       const moveInterval = setInterval(() => {
-        if (!img.parentElement) return clearInterval(moveInterval);
+        if (!img.parentElement || gameOver) return clearInterval(moveInterval);
         img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
         img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
       }, 2000);
@@ -146,9 +149,7 @@
     }
 
     function startGame() {
-      gameInterval = setInterval(() => {
-        spawnAnimal();
-      }, 1500);
+      gameInterval = setInterval(spawnAnimal, 1500);
 
       const timer = setInterval(() => {
         timeLeft--;
@@ -156,6 +157,10 @@
         if (timeLeft <= 0) {
           clearInterval(timer);
           clearInterval(gameInterval);
+          gameOver = true;
+
+          // Remove all animals from screen
+          document.querySelectorAll('.animal').forEach(a => a.remove());
 
           let result = `Time's up! You caught ${score} animals out of ${totalShown} shown.`;
           if (score > bestScore) {

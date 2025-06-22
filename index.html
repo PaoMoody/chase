@@ -32,19 +32,22 @@
       z-index: 2;
     }
     #message {
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #e95732;
-      color: white;
-      padding: 20px 30px;
+      width: 800px;
+      height: 600px;
+      background: url('sign-background.png') no-repeat center center;
+      background-size: cover;
+      color: #000;
+      padding: 40px;
       border-radius: 10px;
       font-weight: bold;
       display: none;
-      z-index: 999;
+      z-index: 3;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
     #scoreBoard {
       position: absolute;
@@ -157,7 +160,7 @@
     }
 
     function showFinalMessage(text) {
-      message.innerHTML = text + '<div id="finalButtons">' +
+      message.innerHTML = `<div style="margin-top: 300px; font-size: 20px; color: #000;">${text}</div><div id="finalButtons">` +
         '<button class="final-btn" onclick="location.reload()">Play Again</button>' +
         '<button class="final-btn" onclick="window.location.href=\"index.html\"">Home</button>' +
         '</div>';

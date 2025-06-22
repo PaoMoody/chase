@@ -19,7 +19,7 @@
       width: 80px;
       height: 80px;
       position: absolute;
-      transition: top 1.0s, left 1.0s;
+      transition: top 0.8s, left 0.8s;
       cursor: pointer;
     }
     #kid {
@@ -32,7 +32,7 @@
       z-index: 2;
     }
     #message {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -42,8 +42,9 @@
       border-radius: 10px;
       font-weight: bold;
       display: none;
-      z-index: 3;
+      z-index: 999;
       text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
     #scoreBoard {
       position: absolute;

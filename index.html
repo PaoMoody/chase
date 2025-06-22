@@ -70,7 +70,7 @@
 </head>
 <body>
   <div id="gameArea">
-    <img id="kid" src="kid.png" alt="kid">
+    <img id="kid" src="Kid.png" alt="kid">
     <div id="message"></div>
     <div id="scoreBoard">Score: 0</div>
     <div id="timer">Time: 45</div>
@@ -93,6 +93,8 @@
     let score = 0;
     let timeLeft = 45;
     let gameInterval;
+    let totalShown = 0;
+    let bestScore = localStorage.getItem('chaseBestScore') || 0;
 
     function updateScore() {
       score++;
@@ -107,6 +109,7 @@
       img.style.top = Math.random() * (window.innerHeight - 100) + 'px';
       img.style.left = Math.random() * (window.innerWidth - 100) + 'px';
       gameArea.appendChild(img);
+      totalShown++;
 
       img.addEventListener('click', () => {
         const rect = img.getBoundingClientRect();
@@ -153,7 +156,13 @@
         if (timeLeft <= 0) {
           clearInterval(timer);
           clearInterval(gameInterval);
-          showMessage(`Time's up! You caught ${score} animals!`);
+
+          let result = `Time's up! You caught ${score} animals out of ${totalShown} shown.`;
+          if (score > bestScore) {
+            localStorage.setItem('chaseBestScore', score);
+            result += ' 🎉 New record!';
+          }
+          showMessage(result);
         }
       }, 1000);
     }

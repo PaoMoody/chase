@@ -19,7 +19,7 @@
       width: 80px;
       height: 80px;
       position: absolute;
-      transition: top 0.6s, left 0.6s;
+      transition: top 1.0s, left 1.0s;
       cursor: pointer;
     }
     #kid {
@@ -33,16 +33,17 @@
     }
     #message {
       position: absolute;
-      top: 20px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       background: #e95732;
       color: white;
-      padding: 10px 20px;
+      padding: 20px 30px;
       border-radius: 10px;
       font-weight: bold;
       display: none;
       z-index: 3;
+      text-align: center;
     }
     #scoreBoard {
       position: absolute;
@@ -65,6 +66,19 @@
       border-radius: 10px;
       font-weight: bold;
       z-index: 3;
+    }
+    #finalButtons {
+      margin-top: 20px;
+    }
+    .final-btn {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #5e98ab;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -124,7 +138,6 @@
           new Audio(`${data.short}.mp3`).play();
           setTimeout(() => {
             new Audio(`${data.long}.mp3`).play();
-            showMessage(`You caught a ${data.short}!`);
             updateScore();
             img.remove();
           }, 1000);
@@ -142,10 +155,12 @@
       }, 8000);
     }
 
-    function showMessage(text) {
-      message.textContent = text;
+    function showFinalMessage(text) {
+      message.innerHTML = text + '<div id="finalButtons">' +
+        '<button class="final-btn" onclick="location.reload()">Play Again</button>' +
+        '<button class="final-btn" onclick="window.location.href=\"index.html\"">Home</button>' +
+        '</div>';
       message.style.display = 'block';
-      setTimeout(() => message.style.display = 'none', 2000);
     }
 
     function startGame() {
@@ -159,15 +174,14 @@
           clearInterval(gameInterval);
           gameOver = true;
 
-          // Remove all animals from screen
           document.querySelectorAll('.animal').forEach(a => a.remove());
 
-          let result = `Time's up! You caught ${score} animals out of ${totalShown} shown.`;
+          let result = `Time's up!<br>You caught <strong>${score}</strong> animals out of <strong>${totalShown}</strong> shown.`;
           if (score > bestScore) {
             localStorage.setItem('chaseBestScore', score);
-            result += ' 🎉 New record!';
+            result += '<br>🎉 <strong>New record!</strong>';
           }
-          showMessage(result);
+          showFinalMessage(result);
         }
       }, 1000);
     }
